@@ -1,1 +1,31 @@
-print("Hello, World!")
+import tkinter as tk
+from screen.start_page import StartPage
+from screen.login import LoginPage
+from screen.register import RegisterPage
+
+class App(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.geometry("1024x600")
+        self.configure(bg="white")
+        self.title("Trashlink Pro")
+
+        self.container = tk.Frame(self, bg="white")
+        self.container.pack(fill="both", expand=True)
+
+        self.frames = {}
+        for F in (StartPage, LoginPage, RegisterPage):
+            page_name = F.__name__
+            frame = F(parent=self.container, controller=self)
+            self.frames[page_name] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
+
+        self.show_frame("StartPage")
+
+    def show_frame(self, page_name):
+        frame = self.frames[page_name]
+        frame.tkraise()
+
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()
