@@ -1,10 +1,11 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 
-class InputPage(tk.Frame):
+class EndPage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent, bg="white")
-        
+        self.controller = controller
+
         canvas = tk.Canvas(self, width=1024, height=600, bg="white", highlightthickness=0)
         canvas.pack(fill="both", expand=True)
 
@@ -15,28 +16,19 @@ class InputPage(tk.Frame):
         logo = Image.open("./assets/logo.png").resize((100, 100))
         canvas.logo = ImageTk.PhotoImage(logo)
         canvas.create_image(23, 22, image=canvas.logo, anchor="nw")
-        
-        input_label = tk.Label(self, text="Mau masukkan berapa botol?", font=("Inter", 14, "bold"), bg="white", fg="#2f4f12")
-        input_label.place(x=305, y=275)
-        self.input_entry = tk.Entry(
-            self, 
-            font=("Inter", 14),
-            bg="white",
-            fg="#2f4f12",
-            bd=0,
-            highlightthickness=2,
-            highlightbackground="#cccccc",
-            highlightcolor="#cccccc",
-            relief="flat",
-            insertbackground="#2E8B57"
-        )
-        self.input_entry.place(x=295, y=305, width=450, height=40)
 
-        
+        canvas.create_text(512, 270, text="Poinmu = ...", fill="#2f4f12", font=("Inter", 28, "bold"))
+        canvas.create_text(512, 320, text="Cetak voucher?", fill="#2f4f12", font=("Inter", 32, "bold"))
+
         button_img = Image.open("./assets/button.png").resize((200, 50)).convert("RGBA")
         canvas.button = ImageTk.PhotoImage(button_img)
-        
-        cancel_btn = tk.Button(self, image=canvas.button, text="Cancel", font=("Inter", 12, "bold"), fg="#2f4f12",
+
+        close_btn = tk.Button(self, image=canvas.button, text="Tidak", font=("Inter", 12, "bold"), fg="#2f4f12",
                                 compound="center", bd=0, bg="white", activebackground="white",
-                                command=lambda: controller.show_frame("StartPage"))
-        cancel_btn.place(x=80, y=520, width=200, height=50)
+                                command=lambda: controller.show_frame("LoginPage"))
+        close_btn.place(x=80, y=520, width=200, height=50)
+
+        print_btn = tk.Button(self, image=canvas.button, text="Cetak", font=("Inter", 12, "bold"), fg="#2f4f12",
+                                    compound="center", bd=0, bg="white", activebackground="white",
+                                    command=lambda: controller.show_frame("RegisterPage"))
+        print_btn.place(x=750, y=520, width=200, height=50)

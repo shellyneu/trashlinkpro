@@ -24,11 +24,11 @@ class StartPage(tk.Frame):
         canvas.button = ImageTk.PhotoImage(button_img)
 
         login_btn = tk.Button(self, image=canvas.button, text="Login", font=("Inter", 12, "bold"), fg="#2f4f12",
-                              compound="center", bd=0, bg="white", activebackground="white",
-                              command=lambda: controller.show_frame("LoginPage"))
+                                compound="center", bd=0, bg="white", activebackground="white",
+                                command=lambda: controller.show_frame("LoginPage"))
         login_btn.place(x=80, y=520, width=200, height=50)
 
         register_btn = tk.Button(self, image=canvas.button, text="Register", font=("Inter", 12, "bold"), fg="#2f4f12",
-                                 compound="center", bd=0, bg="white", activebackground="white",
-                                 command=lambda: controller.show_frame("RegisterPage"))
+                                    compound="center", bd=0, bg="white", activebackground="white",
+                                    command=lambda: controller.show_frame("RegisterPage"))
         register_btn.place(x=750, y=520, width=200, height=50)
