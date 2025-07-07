@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 class LoginPage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent, bg="white")
+        self.controller = controller
         
         canvas = tk.Canvas(self, width=1024, height=600, bg="white", highlightthickness=0)
         canvas.pack(fill="both", expand=True)
@@ -20,6 +21,8 @@ class LoginPage(tk.Frame):
         
         nim_label = tk.Label(self, text="NIM", font=("Inter", 14, "bold"), bg="white", fg="#2f4f12")
         nim_label.place(x=305, y=275)
+
+        vcmd = (self.register(self.validate_numbers), "%P")
         self.nim_entry = tk.Entry(
             self,
             font=("Inter", 14),
@@ -30,7 +33,9 @@ class LoginPage(tk.Frame):
             highlightbackground="#cccccc",
             highlightcolor="#cccccc",
             relief="flat",
-            insertbackground="#2E8B57"
+            insertbackground="#2E8B57",
+            validate="key",
+            validatecommand=vcmd
         )
         self.nim_entry.place(x=295, y=305, width=450, height=40)
 
@@ -47,3 +52,9 @@ class LoginPage(tk.Frame):
                                     compound="center", bd=0, bg="white", activebackground="white",
                                     command=lambda: controller.show_frame("InputPage"))
         input_.place(x=750, y=520, width=200, height=50)
+
+    def reset_form(self):
+        self.nim_entry.delete(0, tk.END)
+
+    def validate_numbers(self, text):
+        return text.isdigit() or text == ""

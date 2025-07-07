@@ -2,6 +2,9 @@ import tkinter as tk
 from screen.start_page import StartPage
 from screen.login import LoginPage
 from screen.register import RegisterPage
+from screen.input_botol import InputPage
+from screen.loop import LoopPage
+from screen.end_page import EndPage
 
 class App(tk.Tk):
     def __init__(self):
@@ -14,7 +17,7 @@ class App(tk.Tk):
         self.container.pack(fill="both", expand=True)
 
         self.frames = {}
-        for F in (StartPage, LoginPage, RegisterPage):
+        for F in (StartPage, LoginPage, RegisterPage, InputPage, LoopPage, EndPage):
             page_name = F.__name__
             frame = F(parent=self.container, controller=self)
             self.frames[page_name] = frame
@@ -24,6 +27,9 @@ class App(tk.Tk):
 
     def show_frame(self, page_name):
         frame = self.frames[page_name]
+
+        if hasattr(frame, 'reset_form'):
+            frame.reset_form()
         frame.tkraise()
 
 if __name__ == "__main__":

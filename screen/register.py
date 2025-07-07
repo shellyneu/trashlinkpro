@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 class RegisterPage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent, bg="white")
+        self.controller = controller
         
         canvas = tk.Canvas(self, width=1024, height=600, bg="white", highlightthickness=0)
         canvas.pack(fill="both", expand=True)
@@ -20,6 +21,8 @@ class RegisterPage(tk.Frame):
         
         nama_label = tk.Label(self, text="Nama", font=("Inter", 14, "bold"), bg="white", fg="#2f4f12")
         nama_label.place(x=305, y=230)
+        
+        vcmd_letters = (self.register(self.validate_letters), "%P")
         self.nama_entry = tk.Entry(
             self,
             font=("Inter", 14),
@@ -30,12 +33,16 @@ class RegisterPage(tk.Frame):
             highlightbackground="#cccccc",
             highlightcolor="#cccccc",
             relief="flat",
-            insertbackground="#2E8B57"
+            insertbackground="#2E8B57",
+            validate="key",
+            validatecommand=vcmd_letters
         )
         self.nama_entry.place(x=295, y=260, width=450, height=40)
 
         nim_label = tk.Label(self, text="NIM", font=("Inter", 14, "bold"), bg="white", fg="#2f4f12")
         nim_label.place(x=305, y=315)
+
+        vcmd_numbers = (self.register(self.validate_numbers), "%P")
         self.nim_entry = tk.Entry(
             self,
             font=("Inter", 14),
@@ -46,7 +53,9 @@ class RegisterPage(tk.Frame):
             highlightbackground="#cccccc",
             highlightcolor="#cccccc",
             relief="flat",
-            insertbackground="#2E8B57"
+            insertbackground="#2E8B57",
+            validate="key",
+            validatecommand=vcmd_numbers
         )
         self.nim_entry.place(x=295, y=345, width=450, height=40)
 
@@ -61,5 +70,16 @@ class RegisterPage(tk.Frame):
 
         register_btn = tk.Button(self, image=canvas.button, text="Register", font=("Inter", 12, "bold"), fg="#2f4f12",
                                     compound="center", bd=0, bg="white", activebackground="white",
-                                    command=lambda: controller.show_frame("RegisterPage"))
+                                    command=lambda: controller.show_frame("LoginPage"))
         register_btn.place(x=750, y=520, width=200, height=50)
+
+    def reset_form(self):
+        self.nama_entry.delete(0, tk.END)
+        self.nim_entry.delete(0, tk.END)
+        pass
+
+    def validate_letters(self, text):
+        return text.isalpha() or text == "" 
+
+    def validate_numbers(self, text):
+        return text.isdigit() or text == "" 
