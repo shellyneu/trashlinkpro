@@ -5,16 +5,33 @@ from screen.register import RegisterPage
 from screen.input_botol import InputPage
 from screen.loop import LoopPage
 from screen.end_page import EndPage
+from database.database import Database
 
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.geometry("1024x550")
+        
+        self.geometry("1024x600")
+        self.minsize(800, 480) 
         self.configure(bg="white")
         self.title("Trashlink Pro")
+        
+        self.resizable(True, True)
+        
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        
+        self.db = Database()
+        
+        self.current_user_nim = None
+        self.current_user_name = None
+        self.current_bottles = 0
 
         self.container = tk.Frame(self, bg="white")
-        self.container.pack(fill="both", expand=True)
+        self.container.grid(row=0, column=0, sticky="nsew")
+        
+        self.container.grid_rowconfigure(0, weight=1)
+        self.container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
         for F in (StartPage, LoginPage, RegisterPage, InputPage, LoopPage, EndPage):
