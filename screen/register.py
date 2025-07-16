@@ -5,13 +5,13 @@ class RegisterPage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent, bg="white")
         self.controller = controller
-        
-        canvas = tk.Canvas(self, width=1024, height=600, bg="white", highlightthickness=0)
+
+        canvas = tk.Canvas(self, width=1024, height=550, bg="white", highlightthickness=0)
         canvas.pack(fill="both", expand=True)
 
         bg_image = Image.open("./assets/background.png").convert("RGBA")
         canvas.bg_img = ImageTk.PhotoImage(bg_image)
-        canvas.create_image(1024, 600, image=canvas.bg_img, anchor="se")
+        canvas.create_image(1024, 550, image=canvas.bg_img, anchor="se")
 
         logo = Image.open("./assets/logo.png").resize((100, 100))
         canvas.logo = ImageTk.PhotoImage(logo)
