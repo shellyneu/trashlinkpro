@@ -43,12 +43,12 @@ class InputPage(tk.Frame):
         cancel_btn = tk.Button(self, image=canvas.button, text="Cancel", font=("Inter", 12, "bold"), fg="#2f4f12",
                                 compound="center", bd=0, bg="white", activebackground="white",
                                 command=lambda: controller.show_frame("StartPage"))
-        cancel_btn.place(x=80, y=520, width=200, height=50)
+        cancel_btn.place(x=80, y=480, width=200, height=50)
 
         submit_btn = tk.Button(self, image=canvas.button, text="Submit", font=("Inter", 12, "bold"), fg="#2f4f12",
                         compound="center", bd=0, bg="white", activebackground="white",
                         command=lambda: controller.show_frame("LoopPage"))
-        submit_btn.place(x=750, y=520, width=200, height=50)
+        submit_btn.place(x=750, y=480, width=200, height=50)
 
     def reset_form(self):
             self.input_entry.delete(0, tk.END)

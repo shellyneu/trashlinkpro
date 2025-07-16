@@ -17,8 +17,8 @@ class LoopPage(tk.Frame):
         canvas.logo = ImageTk.PhotoImage(logo)
         canvas.create_image(23, 22, image=canvas.logo, anchor="nw")
 
-        canvas.create_text(512, 270, text="Masukkan Botol", fill="#2f4f12", font=("Inter", 28, "bold"))
-        canvas.create_text(512, 320, text="Satu-Persatu", fill="#2f4f12", font=("Inter", 28, "bold"))
+        canvas.create_text(500, 250, text="Masukkan Botol", fill="#2f4f12", font=("Inter", 28, "bold"))
+        canvas.create_text(500, 300, text="Satu-Persatu", fill="#2f4f12", font=("Inter", 28, "bold"))
 
         button_img = Image.open("./assets/button.png").resize((200, 50)).convert("RGBA")
         canvas.button = ImageTk.PhotoImage(button_img)
@@ -26,10 +26,10 @@ class LoopPage(tk.Frame):
         input_again_btn = tk.Button(self, image=canvas.button, text="Tambah Lagi", font=("Inter", 12, "bold"), fg="#2f4f12",
                                         compound="center", bd=0, bg="white", activebackground="white",
                                         command=lambda: controller.show_frame("InputPage"))
-        input_again_btn.place(x=80, y=520, width=200, height=50)
+        input_again_btn.place(x=80, y=480, width=200, height=50)
 
         finish_btn = tk.Button(self, image=canvas.button, text="Selesai", font=("Inter", 12, "bold"), fg="#2f4f12",
                                         compound="center", bd=0, bg="white", activebackground="white",
                                         command=lambda: controller.show_frame("EndPage"))
-        finish_btn.place(x=750, y=520, width=200, height=50)
+        finish_btn.place(x=750, y=480, width=200, height=50)
 

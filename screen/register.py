@@ -17,7 +17,7 @@ class RegisterPage(tk.Frame):
         canvas.logo = ImageTk.PhotoImage(logo)
         canvas.create_image(23, 22, image=canvas.logo, anchor="nw")
 
-        canvas.create_text(512, 170, text="Register", fill="#2f4f12", font=("Inter", 28, "bold"))
+        canvas.create_text(500, 170, text="Register", fill="#2f4f12", font=("Inter", 28, "bold"))
         
         nama_label = tk.Label(self, text="Nama", font=("Inter", 14, "bold"), bg="white", fg="#2f4f12")
         nama_label.place(x=305, y=230)
@@ -66,12 +66,12 @@ class RegisterPage(tk.Frame):
         cancel_btn = tk.Button(self, image=canvas.button, text="Cancel", font=("Inter", 12, "bold"), fg="#2f4f12",
                                 compound="center", bd=0, bg="white", activebackground="white",
                                 command=lambda: controller.show_frame("StartPage"))
-        cancel_btn.place(x=80, y=520, width=200, height=50)
+        cancel_btn.place(x=80, y=480, width=200, height=50)
 
         register_btn = tk.Button(self, image=canvas.button, text="Register", font=("Inter", 12, "bold"), fg="#2f4f12",
                                     compound="center", bd=0, bg="white", activebackground="white",
                                     command=lambda: controller.show_frame("LoginPage"))
-        register_btn.place(x=750, y=520, width=200, height=50)
+        register_btn.place(x=750, y=480, width=200, height=50)
 
     def reset_form(self):
         self.nama_entry.delete(0, tk.END)

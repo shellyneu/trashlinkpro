@@ -17,8 +17,8 @@ class StartPage(tk.Frame):
         canvas.logo = ImageTk.PhotoImage(logo)
         canvas.create_image(23, 22, image=canvas.logo, anchor="nw")
 
-        canvas.create_text(512, 270, text="Welcome to", fill="#2f4f12", font=("Inter", 28, "bold"))
-        canvas.create_text(512, 320, text="TRASHLINK PRO", fill="#2f4f12", font=("Inter", 32, "bold"))
+        canvas.create_text(500, 250, text="Welcome to", fill="#2f4f12", font=("Inter", 28, "bold"))
+        canvas.create_text(500, 300, text="TRASHLINK PRO", fill="#2f4f12", font=("Inter", 32, "bold"))
 
         button_img = Image.open("./assets/button.png").resize((200, 50)).convert("RGBA")
         canvas.button = ImageTk.PhotoImage(button_img)
@@ -26,9 +26,9 @@ class StartPage(tk.Frame):
         login_btn = tk.Button(self, image=canvas.button, text="Login", font=("Inter", 12, "bold"), fg="#2f4f12",
                                 compound="center", bd=0, bg="white", activebackground="white",
                                 command=lambda: controller.show_frame("LoginPage"))
-        login_btn.place(x=80, y=520, width=200, height=50)
+        login_btn.place(x=80, y=480, width=200, height=50)
 
         register_btn = tk.Button(self, image=canvas.button, text="Register", font=("Inter", 12, "bold"), fg="#2f4f12",
                                     compound="center", bd=0, bg="white", activebackground="white",
                                     command=lambda: controller.show_frame("RegisterPage"))
-        register_btn.place(x=750, y=520, width=200, height=50)
+        register_btn.place(x=750, y=480, width=200, height=50)
