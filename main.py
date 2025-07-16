@@ -9,7 +9,7 @@ from screen.end_page import EndPage
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.geometry("1024x500")
+        self.geometry("1024x550")
         self.configure(bg="white")
         self.title("Trashlink Pro")
 
