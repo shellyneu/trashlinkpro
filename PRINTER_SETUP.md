@@ -20,37 +20,79 @@ python find_printer.py
 
 This will show all USB devices and help identify your printer's vendor:product ID.
 
-### Step 2: Update Printer Configuration (if needed)
+# Printer Setup Guide for Trashlink Pro
+
+This guide will help you set up your Woya 58mm WP58D thermal printer for printing receipts.
+
+## Prerequisites
+
+1. **Connect your printer**: Connect the Woya 58mm WP58D via USB
+2. **Power on**: Make sure the printer is powered on
+3. **Paper**: Load thermal paper (58mm width)
+
+## Setup Steps
+
+### Step 1: Run the USB Setup Script
+
+The easiest way to set up your printer is to run our automated setup script:
+
+```bash
+chmod +x setup_usb_linux.sh
+sudo ./setup_usb_linux.sh
+```
+
+This script will:
+- Create USB permissions for your thermal printer
+- Add your user to the dialout group
+- Reload udev rules automatically
+
+After running this script, **unplug and replug your USB printer** for the changes to take effect.
+
+### Step 2: Verify Printer Connection
+
+Check if your printer is detected:
+
+```bash
+lsusb | grep 0fe6
+```
+
+You should see output like: `Bus 001 Device 005: ID 0fe6:811e ICS Advent Parallel Adapter`
+
+### Step 3: Update Printer Configuration (if needed)
 
 If your printer is not automatically detected, you may need to update the printer configuration:
 
 1. Open `utils/printer.py`
-2. Find the `printer_configs` list in the `connect_printer` method
-3. Add your printer's vendor:product ID to the list:
+2. Find the `connect_printer` function
+3. Check if your printer's vendor:product ID is supported (default: 0x0fe6:0x811e for Woya 58mm)
 
-```python
-printer_configs = [
-    {'idVendor': 0x0fe6, 'idProduct': 0x811e},  # Common thermal printer
-    {'idVendor': 0x04b8, 'idProduct': 0x0202},  # Epson
-    {'idVendor': 0x28e9, 'idProduct': 0x0289},  # Another common config
-    {'idVendor': 0x0519, 'idProduct': 0x0003},  # Another thermal printer
-    {'idVendor': 0xYOUR_VENDOR_ID, 'idProduct': 0xYOUR_PRODUCT_ID},  # Your printer
-]
-```
+### Step 4: Test the Printer
 
-### Step 3: Test the Printer
-
-Run the printer setup script to test your printer:
+Test your printer connection with Python:
 
 ```bash
-python setup_printer.py
-```
+# Activate virtual environment
+source env/bin/activate
 
-This script will:
-1. List USB devices
-2. Test printer connection
-3. Run a test print
-4. Print a sample receipt
+# Test printer connection
+python -c "
+from utils.printer import connect_printer, print_receipt
+printer = connect_printer()
+if printer:
+    print('✅ Printer connected successfully!')
+    # Test print
+    test_data = {
+        'name': 'Test User',
+        'bottles': 5,
+        'points': 25,
+        'timestamp': '2025-01-15 10:30:00'
+    }
+    print_receipt(test_data)
+    print('✅ Test receipt printed!')
+else:
+    print('❌ Printer connection failed')
+"
+```
 
 ## Troubleshooting
 
@@ -58,64 +100,78 @@ This script will:
 - Check USB connection
 - Ensure printer is powered on
 - Try different USB ports
-- Check if you need to run with sudo: `sudo python setup_printer.py`
+- Run the setup script again: `sudo ./setup_usb_linux.sh`
+- Reboot after running setup script
 
 ### Permission Denied
-Some systems require special permissions to access USB devices:
+If you still get permission errors:
 ```bash
-sudo python setup_printer.py
+# Make sure setup script was run
+sudo ./setup_usb_linux.sh
+
+# Check if user is in dialout group
+groups $USER
+
+# Manually add user to groups if needed
+sudo usermod -a -G lp,dialout $USER
+
+# Log out and log back in for group changes to take effect
 ```
 
-Or add your user to the appropriate group:
+### USB Device Not Recognized
+Check if your printer has the correct USB ID:
 ```bash
-sudo usermod -a -G lp $USER
-sudo usermod -a -G dialout $USER
+# List all USB devices
+lsusb
+
+# Look for device with ID 0fe6:811e
+lsusb | grep 0fe6
 ```
 
 ### Paper Issues
 - Make sure you're using 58mm thermal paper
-- Check paper is loaded correctly
+- Check paper is loaded correctly (print side down)
 - Ensure paper roll is not empty
-
-### Driver Issues
-On some Linux systems, you might need to install printer drivers:
-```bash
-sudo apt update
-sudo apt install printer-driver-all
-```
+- Paper should feed from the bottom of the roll
 
 ## Receipt Format
 
 The printed receipt will include:
-- **Header**: "TRASHLINK PRO" and "Voucher Recycling"
-- **User Info**: NIM and Name
-- **Bottle Count**: Total bottles recycled
-- **Points**: Total points earned (10 points per bottle)
+- **Header**: "TRASHLINK PRO" and logo
+- **Divider lines**: Decorative separators
+- **User Info**: Name and details
+- **Transaction**: Bottle count and points earned
 - **Date/Time**: When the receipt was printed
-- **Footer**: Environmental message
+- **Footer**: Thank you message
 
 ## Testing
 
-You can test the printer at any time by running:
-```bash
-python setup_printer.py
-```
+You can test the printer at any time by running the test code above, or by using the main application and completing a recycling transaction.
 
 ## Usage in Application
 
 Once configured, the print function will be available in the application:
-1. User completes bottle recycling
-2. Goes to the end page showing points
+1. User completes bottle recycling process
+2. Goes to the end page showing points earned
 3. Clicks "Cetak" (Print) button
-4. Confirms print dialog
-5. Receipt is printed automatically
+4. Receipt is printed automatically with transaction details
 
-## Common Printer IDs for Thermal Printers
+## Supported Printer Configuration
 
-Here are some common vendor:product IDs for thermal printers:
-- `0fe6:811e` - Common thermal printer
-- `04b8:0202` - Epson thermal printer
-- `28e9:0289` - Another common thermal printer
-- `0519:0003` - Generic thermal printer
+The current configuration supports:
+- **Vendor ID**: 0x0fe6
+- **Product ID**: 0x811e
+- **Model**: Woya 58mm WP58D thermal printer
+- **Connection**: USB only
+- **Paper Width**: 58mm thermal paper
+- **Protocol**: ESC/POS commands
 
-If none of these work, use the `find_printer.py` script to identify your specific printer ID.
+If you have a different thermal printer model, you may need to update the vendor/product IDs in `utils/printer.py`.
+
+## Quick Setup Summary
+
+1. Run: `sudo ./setup_usb_linux.sh`
+2. Unplug and replug printer
+3. Test with the Python command above
+4. Start using the application!
+````
