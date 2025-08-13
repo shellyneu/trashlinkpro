@@ -1,5 +1,7 @@
 import tkinter as tk
+from tkinter import messagebox
 from PIL import Image, ImageTk
+from utils.printer import receipt_printer
 
 class EndPage(tk.Frame):
     def __init__(self, parent, controller):
@@ -36,7 +38,7 @@ class EndPage(tk.Frame):
         
         self.print_btn = tk.Button(self, image=self.button_img, text="Cetak", font=("Inter", 12, "bold"), fg="#2f4f12",
                                   compound="center", bd=0, bg="white", activebackground="white",
-                                  command=self.logout_user)
+                                  command=self.print_voucher)
         
         self.update_layout()
 
@@ -87,6 +89,52 @@ class EndPage(tk.Frame):
             total_bottles = self.controller.db.get_user_bottles(self.controller.current_user_nim)
             points = total_bottles * 10  
             self.canvas.itemconfig(self.points_text, text=f"Poinmu = {points}")
+
+    def print_voucher(self):
+        """Print the voucher receipt with user points and information"""
+        if not self.controller.current_user_nim:
+            messagebox.showerror("Error", "No user logged in")
+            return
+        
+        try:
+            # Get user information
+            user_nim = self.controller.current_user_nim
+            user_name = self.controller.current_user_name
+            
+            # Get total bottles and calculate points
+            total_bottles = self.controller.db.get_user_bottles(user_nim)
+            points = total_bottles * 10
+            
+            # Show confirmation dialog
+            result = messagebox.askyesno(
+                "Confirm Print", 
+                f"Print voucher for {user_name}?\n\n"
+                f"NIM: {user_nim}\n"
+                f"Total Bottles: {total_bottles}\n"
+                f"Points: {points}\n\n"
+                f"Make sure printer is connected and has paper."
+            )
+            
+            if not result:
+                return
+            
+            # Print the receipt
+            success, message = receipt_printer.print_receipt(
+                user_name=user_name,
+                user_nim=user_nim, 
+                points=points,
+                total_bottles=total_bottles
+            )
+            
+            if success:
+                messagebox.showinfo("Success", message)
+                # After successful print, logout user
+                self.logout_user()
+            else:
+                messagebox.showerror("Print Error", message)
+                
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to print voucher: {str(e)}")
 
     def logout_user(self):
         self.controller.current_user_nim = None
